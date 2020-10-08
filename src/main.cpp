@@ -1,5 +1,5 @@
-#include <iostream>
+#include "gui/window.hpp"
 
 int main() {
-  std::cout << "Hello World!\n";
+  Window window;
 }
