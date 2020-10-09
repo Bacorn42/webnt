@@ -1,11 +1,13 @@
 set(
   SOURCES
   window.cpp
+  inputBox.cpp
 )
 
 set(
   HEADERS
   window.hpp
+  inputBox.hpp
 )
 
 add_library(gui ${SOURCES} ${HEADERS})

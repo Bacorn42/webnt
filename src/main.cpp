@@ -1,5 +1,5 @@
-#include "gui/window.hpp"
+#include "webnt.hpp"
 
 int main() {
-  Window window;
+  Webnt webnt;
 }

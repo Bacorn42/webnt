@@ -1,9 +1,10 @@
 #include <windows.h>
-#include <tchar.h>
 
 class Window {
 public:
   Window();
+  void run();
+  HWND getHandle() { return handle; }
 
 private:
   void registerClass();

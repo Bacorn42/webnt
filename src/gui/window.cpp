@@ -5,7 +5,9 @@ static LPCWSTR className = L"Main_Window";
 Window::Window() {
   registerClass();
   createWindow();
+}
 
+void Window::run() {
   ShowWindow(handle, SW_SHOWNORMAL);
   UpdateWindow(handle);
 
