@@ -18,7 +18,7 @@ void Window::registerClass() {
   WNDCLASSW wc;
 
   wc.style = 0;
-  wc.lpfnWndProc = Window::windowProcessor;
+  wc.lpfnWndProc = Window::windowProcedure;
   wc.cbClsExtra = 0;
   wc.cbWndExtra = 0;
   wc.hInstance = GetModuleHandleW(NULL);
@@ -50,7 +50,7 @@ void Window::messageLoop() {
   }
 }
 
-LRESULT CALLBACK Window::windowProcessor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK Window::windowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
   switch (msg) {
     case WM_CLOSE:
       DestroyWindow(hwnd);

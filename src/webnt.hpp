@@ -1,3 +1,5 @@
+#include <windows.h>
+
 #include "gui/window.hpp"
 #include "gui/inputBox.hpp"
 

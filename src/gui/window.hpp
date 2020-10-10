@@ -10,7 +10,7 @@ private:
   void registerClass();
   void createWindow();
   void messageLoop();
-  static LRESULT CALLBACK windowProcessor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+  static LRESULT CALLBACK windowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
   HWND handle;
 };
