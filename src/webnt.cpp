@@ -3,9 +3,14 @@
 Webnt::Webnt() :
 window(Window()),
 inputBox(InputBox(window.getHandle())) {
-  inputBox.addCallback(WM_KEYDOWN, [](WPARAM wParam, LPARAM lParam){
+  inputBox.addCallback(WM_KEYDOWN, [this](WPARAM wParam, LPARAM lParam){
     if(wParam == VK_RETURN) {
-      MessageBoxW(NULL, L"Pressed enter on input box!", L"Yay!", MB_OK);
+      std::string url = inputBox.getText();
+      Connection conn(url);
+      if(!conn.hadError()) {
+        HTTPMessage message = conn.sendRequest();
+        std::cout << message.getMessageString();
+      }
     }
   });
   window.run();

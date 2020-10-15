@@ -1,3 +1,6 @@
+#ifndef WINDOW_HPP
+#define WINDOW_HPP
+
 #include <windows.h>
 
 class Window {
@@ -14,3 +17,5 @@ private:
 
   HWND handle;
 };
+
+#endif /* WINDOW_HPP */

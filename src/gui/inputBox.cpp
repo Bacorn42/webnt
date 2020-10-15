@@ -28,6 +28,18 @@ bool InputBox::callCallback(UINT msg, WPARAM wParam, LPARAM lParam) {
   return true;
 }
 
+std::string InputBox::getText() {
+  int size = GetWindowTextLengthW(handle);
+  if(size > 0) {
+    wchar_t *buffer = new wchar_t[size + 1];
+    GetWindowTextW(handle, buffer, size + 1);
+    std::wstring str(buffer, size + 1);
+    delete[] buffer;
+    return std::string(str.begin(), str.end());
+  }
+  return "";
+}
+
 LRESULT CALLBACK InputBox::inputProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
   auto input = inputBoxes.find(hwnd);
   if(input != inputBoxes.end()) {
