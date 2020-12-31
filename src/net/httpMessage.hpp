@@ -11,6 +11,7 @@ public:
   void addHeader(std::string key, std::string value) { headers[key] = value; }
   void addHeader(std::pair<std::string, std::string> pair) { headers[pair.first] = pair.second; }
   void setBody(std::string b) { body = b; }
+  std::string getBody() { return body; }
   bool hasHeader(std::string key) { return headers.contains(key); }
   std::string getHeader(std::string key) { return headers[key]; }
 

@@ -1,6 +1,7 @@
 #ifndef WEBNT_HPP
 #define WEBNT_HPP
 
+#include <functional>
 #include <iostream>
 #include <windows.h>
 
