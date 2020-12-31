@@ -19,6 +19,24 @@ void HTTPMessageBuilder::readMoreBytes() {
   buffer += socketStream.nextString();
 }
 
+void HTTPMessageBuilder::readChunks() {
+  int index = buffer.find("\r\n");
+  int chunkLength = std::stoi(std::string(buffer, 0, index), nullptr, 16);
+  buffer.erase(0, index + 2);
+  chunkLength -= buffer.size();
+  while(chunkLength > 0) {
+    std::string chunk = socketStream.nextString(chunkLength);
+    chunkLength -= chunk.size();
+    buffer += chunk;
+  }
+  socketStream.nextString(2); // \r\n
+  std::string chunk;
+  do {
+    chunk = socketStream.nextChunk();
+    buffer += chunk;
+  } while(chunk.size() != 0);
+}
+
 void HTTPMessageBuilder::readStartLine(HTTPMessage& message) {
   int index = buffer.find("\n");
   while(index == std::string::npos) {
@@ -54,7 +72,12 @@ void HTTPMessageBuilder::readBody(HTTPMessage& message) {
       readMoreBytes();
     }
     message.setBody(buffer);
-  } else {
+  } else if(message.hasHeader("Transfer-Encoding") && 
+            message.getHeader("Transfer-Encoding") == "chunked") {
+    readChunks();
+    message.setBody(buffer);
+  }
+   else {
     message.setBody("");
   }
   buffer.clear();

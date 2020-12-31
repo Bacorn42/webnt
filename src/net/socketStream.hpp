@@ -7,10 +7,11 @@
 class SocketStream {
 public:
   SocketStream(SOCKET& conn);
-  std::string nextString();
+  std::string nextString(int size = BufferSize);
+  std::string nextChunk();
 
 private:
-  static const int BufferSize = 1024;
+  static constexpr int BufferSize = 1024;
   SOCKET& conn;
 };
 

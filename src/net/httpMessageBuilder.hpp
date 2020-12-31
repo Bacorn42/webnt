@@ -11,6 +11,7 @@ public:
 
 private:
   void readMoreBytes();
+  void readChunks();
   void readStartLine(HTTPMessage& message);
   void readHeaders(HTTPMessage& message);
   void readBody(HTTPMessage& message);
