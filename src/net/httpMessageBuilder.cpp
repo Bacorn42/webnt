@@ -20,21 +20,26 @@ void HTTPMessageBuilder::readMoreBytes() {
 }
 
 void HTTPMessageBuilder::readChunks() {
-  int index = buffer.find("\r\n");
-  int chunkLength = std::stoi(std::string(buffer, 0, index), nullptr, 16);
-  buffer.erase(0, index + 2);
-  chunkLength -= buffer.size();
-  while(chunkLength > 0) {
-    std::string chunk = socketStream.nextString(chunkLength);
-    chunkLength -= chunk.size();
-    buffer += chunk;
-  }
-  socketStream.nextString(2); // \r\n
+  readCurrentChunk();
   std::string chunk;
   do {
     chunk = socketStream.nextChunk();
     buffer += chunk;
   } while(chunk.size() != 0);
+}
+
+void HTTPMessageBuilder::readCurrentChunk() {
+  int index = buffer.find("\r\n");
+  int chunkLength = std::stoi(std::string(buffer, 0, index), nullptr, 16);
+  buffer.erase(0, index + 2);
+  chunkLength -= buffer.size();
+  
+  while(chunkLength > 0) {
+    std::string chunk = socketStream.nextString(chunkLength);
+    chunkLength -= chunk.size();
+    buffer += chunk;
+  }
+  socketStream.consumeNewline(); // \r\n
 }
 
 void HTTPMessageBuilder::readStartLine(HTTPMessage& message) {

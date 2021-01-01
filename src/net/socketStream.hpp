@@ -9,8 +9,11 @@ public:
   SocketStream(SOCKET& conn);
   std::string nextString(int size = BufferSize);
   std::string nextChunk();
+  void consumeNewline();
 
 private:
+  int getChunkLength();
+
   static constexpr int BufferSize = 1024;
   SOCKET& conn;
 };

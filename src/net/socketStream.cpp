@@ -13,19 +13,30 @@ std::string SocketStream::nextString(int size) {
 }
 
 std::string SocketStream::nextChunk() {
+  int chunkLength = getChunkLength();
+  std::string chunk;
+  while(chunkLength > 0) {
+    std::string chunkFragment = nextString(chunkLength);
+    chunk += chunkFragment;
+    chunkLength -= chunkFragment.size();
+  }
+  consumeNewline();
+  
+  return chunk;
+}
+
+int SocketStream::getChunkLength() {
   char buffer[BufferSize];
   int bufferPtr = 0;
   do {
     int bytes = recv(conn, buffer + bufferPtr, 1, 0);
     bufferPtr += bytes;
   } while(buffer[bufferPtr - 1] != '\n');
+
   int chunkLength = std::stoi(std::string(buffer, bufferPtr - 2), nullptr, 16);
-  std::string chunk;
-  while(chunkLength > 0) {
-    int bytes = recv(conn, buffer, std::min(BufferSize, chunkLength), 0);
-    chunk.append(buffer, bytes);
-    chunkLength -= bytes;
-  }
-  recv(conn, buffer, 2, 0); // \r\n
-  return chunk;
+  return chunkLength;
+}
+
+void SocketStream::consumeNewline() {
+  nextString(2); // \r\n
 }
